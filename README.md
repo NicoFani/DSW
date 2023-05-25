@@ -1,7 +1,7 @@
 # DSW
 En este repositorio se subirán todos los trabajos/tareas de la materia DSW
 
-ARCHIVOS DEL REPOSITORIO
+DESCRIPCIÓN DE LOS ARCHIVOS DE ESTE REPOSITORIO
 
 expReg.js, es un programa que valida que un DNI ingresado por teclado esté correctamente escrito (utilizando expresiones regulares)
 
