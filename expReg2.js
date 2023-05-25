@@ -1,51 +1,52 @@
 const prompt=require("prompt-sync")({sigint:true});
 
-
+// Función para validar el DNI utilizando una expresión regular
+function validarDNI(dni) {
+  // Expresión regular para validar el DNI de 7 u 8 dígitos numéricos
+  var regexDNI = /^\d{7,8}$/;
+  return regexDNI.test(dni);
+}
 
 // Función para calcular el CUIT
-function calcularCUIT(dni) {
-  // Verificar que el DNI sea un número de 8 dígitos
-  if (!/^\d{8}$/.test(dni)) {
-    return "El DNI ingresado no es válido. Debe contener 8 dígitos.";
-  }
-
-  // Generar el número de CUIT
-  var cuit = "20" + dni; // Agregar el prefijo "20" para personas físicas
-
-  // Calcular el dígito verificador
-  var acumulado = 0;
-  var digitos = cuit.split("");
-  var digitoVerificador;
-
-  for (var i = 0; i < digitos.length; i++) {
-    var digito = parseInt(digitos[i], 10);
-    var coeficiente = (i % 2 === 0) ? 5 : 4;
-    acumulado += digito * coeficiente;
-  }
-
-  var resto = acumulado % 11;
-  if (resto === 0) {
-    digitoVerificador = 0;
+function calcularCUIT(genero, dni) {
+  var cuit = '';
+  
+  if (genero === 'femenino') {
+    cuit += '27'; // Prefijo para género femenino
+  } else if (genero === 'masculino') {
+    cuit += '20'; // Prefijo para género masculino
   } else {
-    digitoVerificador = 11 - resto;
+    console.log('Género inválido');
+    return;
   }
-
-  // Retornar el CUIT completo
-  return cuit + digitoVerificador;
+  
+  if (validarDNI(dni)) {
+    cuit += dni;
+    var verificador = 0;
+    var cuitArray = cuit.split('').map(Number);
+    
+    // Cálculo del dígito verificador
+    var coeficiente = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
+    for (var i = 0; i < coeficiente.length; i++) {
+      verificador += cuitArray[i] * coeficiente[i];
+    }
+    
+    verificador = 11 - (verificador % 11);
+    if (verificador === 11) {
+      verificador = 0;
+    }
+    
+    cuit += verificador;
+    console.log('El CUIT calculado es:', cuit);
+  } else {
+    console.log('DNI inválido');
+  }
 }
 
-// Solicitar el ingreso del DNI por teclado
-var dni = prompt("Ingrese su número de DNI:");
+// Ejemplo de uso
+var genero = prompt('Ingrese el género (femenino o masculino):');
+var dni = prompt('Ingrese el DNI:');
 
-// Calcular el CUIT
-var cuit = calcularCUIT(dni);
-
-// Mostrar el resultado
-if (!/^\d{8}$/.test(dni)) {
-  console.log("El DNI ingresado no es válido. Debe contener 8 dígitos.");
-}
-else {
-  console.log("El CUIT correspondiente al DNI " + dni + " es: " + cuit);
-}
+calcularCUIT(genero, dni);
 
 
