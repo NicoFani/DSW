@@ -43,7 +43,6 @@ function calcularCUIT(genero, dni) {
   }
 }
 
-// Ejemplo de uso
 var genero = prompt('Ingrese el género (femenino o masculino):');
 var dni = prompt('Ingrese el DNI:');
 
